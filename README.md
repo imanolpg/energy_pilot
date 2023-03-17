@@ -1,4 +1,4 @@
-# energy_pilot
+# EnergyPilot
 
 App for monitoring EnergyPilot BMS
 
