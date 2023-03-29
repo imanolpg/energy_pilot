@@ -17,12 +17,18 @@ class BatteryStatus extends StatelessWidget {
     return Container(
       child: Row(
         children: [
+          const SizedBox(
+            width: 30,
+          ),
           Transform.rotate(
             angle: math.pi / 2,
-            child: Icon(
-              battery.icon,
-              size: 80,
-              color: battery.iconColor,
+            child: SizedBox(
+              height: 40.0,
+              child: Icon(
+                battery.icon,
+                size: 70,
+                color: battery.iconColor,
+              ),
             ),
           ),
           const SizedBox(
@@ -33,7 +39,7 @@ class BatteryStatus extends StatelessWidget {
             width: 20,
             height: 0,
           ),
-          Text('Current voltage: ${battery.voltage} V'),
+          Text('Current voltage: ${battery.voltage}V'),
         ],
       ),
     );
