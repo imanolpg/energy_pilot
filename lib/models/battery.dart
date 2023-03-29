@@ -5,8 +5,9 @@ class Battery {
   late double voltage;
   late IconData icon;
   late Color iconColor;
-  final double maxVoltage = 4.2;
-  final double minVoltage = 3.3;
+  double maxVoltage = 4.2;
+  double minVoltage = 3.3;
+  double maxAmps = 30.0;
 
   void setIconFromVoltage() {
     double range = maxVoltage - minVoltage;

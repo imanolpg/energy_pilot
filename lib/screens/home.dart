@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:energy_pilot/widgets/Footer.dart';
+import 'package:energy_pilot/widgets/battery_config.dart';
 import 'package:energy_pilot/widgets/battery_status.dart';
 import 'package:flutter/material.dart';
 
@@ -52,6 +53,9 @@ class _HomeState extends State<Home> {
                   ),
                 )
                 .toList(),
+          ),
+          BatteryConfig(
+            batteries: batteries,
           ),
         ],
       ),
