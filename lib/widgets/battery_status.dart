@@ -14,34 +14,39 @@ class BatteryStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 30,
-          ),
-          Transform.rotate(
-            angle: math.pi / 2,
-            child: SizedBox(
-              height: 40.0,
-              child: Icon(
-                battery.icon,
-                size: 70,
-                color: battery.iconColor,
-              ),
+    return Row(
+      children: [
+        const Spacer(),
+        Transform.rotate(
+          angle: math.pi / 2,
+          child: SizedBox(
+            height: 40.0,
+            child: Icon(
+              battery.icon,
+              size: 70,
+              color: battery.iconColor,
             ),
           ),
-          const SizedBox(
-            width: 30,
+        ),
+        const Spacer(),
+        Text(battery.id),
+        const Spacer(),
+        RichText(
+          text: TextSpan(
+            style: const TextStyle(
+              fontSize: 14.0,
+              color: Colors.black,
+            ),
+            children: [
+              const TextSpan(text: 'Voltage:  '),
+              TextSpan(
+                  text: '${battery.voltage.toStringAsFixed(2)}V',
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
+            ],
           ),
-          Text(battery.id),
-          const SizedBox(
-            width: 20,
-            height: 0,
-          ),
-          Text('Current voltage: ${battery.voltage}V'),
-        ],
-      ),
+        ),
+        const Spacer(),
+      ],
     );
   }
 }

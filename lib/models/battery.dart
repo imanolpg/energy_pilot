@@ -12,8 +12,6 @@ class Battery {
     double range = maxVoltage - minVoltage;
     double interval = range / 8.0;
 
-    double first = (interval * 7) + minVoltage;
-
     if (voltage <= (interval * 1) + minVoltage) {
       icon = Icons.battery_0_bar;
       iconColor = Colors.redAccent;

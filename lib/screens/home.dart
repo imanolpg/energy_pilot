@@ -41,21 +41,19 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            const Text('Aqui va la gráfica'),
-            Column(
-              children: batteries
-                  .map(
-                    (battery) => BatteryStatus(
-                      battery: battery,
-                    ),
-                  )
-                  .toList(),
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          const Text('Aquí va la gráfica'),
+          Column(
+            children: batteries
+                .map(
+                  (battery) => BatteryStatus(
+                    battery: battery,
+                  ),
+                )
+                .toList(),
+          ),
+        ],
       ),
       bottomNavigationBar: const Footer(),
     );
