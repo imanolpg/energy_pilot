@@ -15,13 +15,13 @@ class BatteryConfig extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 20.0),
       padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-      color: Colors.grey[600],
+      color: Colors.black,
       child: Column(
         children: [
           Container(
             margin: const EdgeInsets.only(
-              top: 10,
-              bottom: 10,
+              top: 5,
+              bottom: 5,
             ),
             child: Row(
               children: [
@@ -118,7 +118,7 @@ class BatteryConfig extends StatelessWidget {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 10),
             width: 200,
             child: TextButton(
               style: TextButton.styleFrom(

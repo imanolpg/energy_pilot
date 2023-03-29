@@ -44,7 +44,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: Column(
+      body: ListView(
         children: [
           const AmpChart(),
           Column(
