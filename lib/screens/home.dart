@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:energy_pilot/widgets/Footer.dart';
 import 'package:energy_pilot/widgets/battery_status.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +28,9 @@ class _HomeState extends State<Home> {
 
   void setBatteriesData() {
     for (Battery battery in batteries) {
-      battery.setVoltage(3.2);
+      double randomVoltage =
+          double.parse((3.2 + Random().nextDouble()).toStringAsFixed(2));
+      battery.setVoltage(randomVoltage);
     }
   }
 
@@ -43,11 +47,11 @@ class _HomeState extends State<Home> {
             const Text('Aqui va la gráfica'),
             Column(
               children: batteries
-                  .map((battery) => BatteryStatus(
-                        id: battery.id,
-                        icon: battery.icon,
-                        voltage: battery.voltage,
-                      ))
+                  .map(
+                    (battery) => BatteryStatus(
+                      battery: battery,
+                    ),
+                  )
                   .toList(),
             ),
           ],
