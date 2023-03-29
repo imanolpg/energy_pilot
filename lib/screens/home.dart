@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:energy_pilot/widgets/Footer.dart';
 import 'package:energy_pilot/widgets/battery_config.dart';
-import 'package:energy_pilot/widgets/battery_status.dart';
+import 'package:energy_pilot/widgets/cell_status.dart';
 import 'package:flutter/material.dart';
 
 import '../models/battery.dart';
+import '../models/cell.dart';
+import '../widgets/battery_current_chart.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -15,23 +17,23 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Battery> batteries = [
-    Battery(
+  Battery battery = Battery(batteryId: "Bateria1", cells: [
+    Cell(
       id: "bat_1",
     ),
-    Battery(
+    Cell(
       id: "bat_2",
     ),
-    Battery(
+    Cell(
       id: "bat_3",
     ),
-  ];
+  ]);
 
   void setBatteriesData() {
-    for (Battery battery in batteries) {
+    for (Cell cell in battery.cells) {
       double randomVoltage =
           double.parse((3.2 + Random().nextDouble()).toStringAsFixed(2));
-      battery.setVoltage(randomVoltage);
+      cell.setVoltage(randomVoltage);
     }
   }
 
@@ -44,18 +46,18 @@ class _HomeState extends State<Home> {
       ),
       body: Column(
         children: [
-          const Text('Aquí va la gráfica'),
+          const AmpChart(),
           Column(
-            children: batteries
+            children: battery.cells
                 .map(
-                  (battery) => BatteryStatus(
-                    battery: battery,
+                  (cell) => CellStatus(
+                    cell: cell,
                   ),
                 )
                 .toList(),
           ),
           BatteryConfig(
-            batteries: batteries,
+            battery: battery,
           ),
         ],
       ),

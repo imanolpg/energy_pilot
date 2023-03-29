@@ -2,14 +2,14 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../models/battery.dart';
+import '../models/cell.dart';
 
-class BatteryStatus extends StatelessWidget {
-  final Battery battery;
+class CellStatus extends StatelessWidget {
+  final Cell cell;
 
-  const BatteryStatus({
+  const CellStatus({
     super.key,
-    required this.battery,
+    required this.cell,
   });
 
   @override
@@ -22,14 +22,14 @@ class BatteryStatus extends StatelessWidget {
           child: SizedBox(
             height: 40.0,
             child: Icon(
-              battery.icon,
+              cell.icon,
               size: 70,
-              color: battery.iconColor,
+              color: cell.iconColor,
             ),
           ),
         ),
         const Spacer(),
-        Text(battery.id),
+        Text(cell.id),
         const Spacer(),
         RichText(
           text: TextSpan(
@@ -40,7 +40,7 @@ class BatteryStatus extends StatelessWidget {
             children: [
               const TextSpan(text: 'Voltage:  '),
               TextSpan(
-                  text: '${battery.voltage.toStringAsFixed(2)}V',
+                  text: '${cell.voltage.toStringAsFixed(2)}V',
                   style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),

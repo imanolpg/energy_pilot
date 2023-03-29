@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../models/battery.dart';
 
 class BatteryConfig extends StatelessWidget {
-  final List<Battery> batteries;
+  final Battery battery;
 
   const BatteryConfig({
     Key? key,
-    required this.batteries,
+    required this.battery,
   }) : super(key: key);
 
   @override
@@ -45,7 +45,7 @@ class BatteryConfig extends StatelessWidget {
                           ),
                           filled: true,
                           hintStyle: TextStyle(color: Colors.grey[900]),
-                          hintText: '${batteries[0].minVoltage} V',
+                          hintText: '${battery.minVoltage} V',
                           fillColor: Colors.white70,
                         ),
                       ),
@@ -72,7 +72,7 @@ class BatteryConfig extends StatelessWidget {
                           ),
                           filled: true,
                           hintStyle: TextStyle(color: Colors.grey[900]),
-                          hintText: "${batteries[0].maxVoltage} V",
+                          hintText: "${battery.maxVoltage} V",
                           fillColor: Colors.white70,
                         ),
                       ),
@@ -108,7 +108,7 @@ class BatteryConfig extends StatelessWidget {
                         ),
                         filled: true,
                         hintStyle: TextStyle(color: Colors.grey[900]),
-                        hintText: "${batteries[0].maxAmps} A",
+                        hintText: "${battery.maxAmps} A",
                         fillColor: Colors.white70,
                       ),
                     ),
