@@ -1,4 +1,5 @@
-import 'package:energy_pilot/widgets/Footer.dart';
+import 'package:energy_pilot/screens/home.dart';
+import 'package:energy_pilot/screens/user.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,19 +14,15 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(_title),
-        ),
-        body: Container(
-          child: Center(
-            child: Directionality(
-              textDirection: TextDirection.ltr,
-              child: Text('Hello'),
-            ),
-          ),
-        ),
-        bottomNavigationBar: const Footer(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const Home(),
+        '/user': (context) => const User(),
+      },
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(color: Colors.blueAccent),
+        brightness: Brightness.light,
       ),
     );
   }
