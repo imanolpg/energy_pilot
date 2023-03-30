@@ -44,17 +44,19 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: ListView(
+      body: Column(
         children: [
           const AmpChart(),
-          Column(
-            children: battery.cells
-                .map(
-                  (cell) => CellStatus(
-                    cell: cell,
-                  ),
-                )
-                .toList(),
+          Expanded(
+            child: Column(
+              children: battery.cells
+                  .map(
+                    (cell) => CellStatus(
+                      cell: cell,
+                    ),
+                  )
+                  .toList(),
+            ),
           ),
           BatteryConfig(
             battery: battery,

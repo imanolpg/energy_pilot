@@ -18,7 +18,7 @@ class _AmpChartState extends State<AmpChart> {
   @override
   void initState() {
     chartData = getChartData();
-    Timer.periodic(const Duration(milliseconds: 500), updateDataSource);
+    Timer.periodic(const Duration(milliseconds: 1000), updateDataSource);
     super.initState();
   }
 
@@ -57,6 +57,7 @@ class _AmpChartState extends State<AmpChart> {
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
+      margin: const EdgeInsets.only(top: 30, bottom: 30, left: 10, right: 10),
       series: <LineSeries<LiveData, int>>[
         LineSeries<LiveData, int>(
           onRendererCreated: (ChartSeriesController controller) {
