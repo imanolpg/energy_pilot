@@ -18,7 +18,7 @@ class _AmpChartState extends State<AmpChart> {
   @override
   void initState() {
     chartData = getChartData();
-    Timer.periodic(const Duration(milliseconds: 1000), updateDataSource);
+    // Timer.periodic(const Duration(milliseconds: 1000), updateDataSource);
     super.initState();
   }
 
