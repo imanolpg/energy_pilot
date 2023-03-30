@@ -10,8 +10,6 @@ void main() {
 }
 
 class App extends StatelessWidget {
-  static const String _title = 'EnergyPilot';
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
