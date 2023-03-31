@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Cell {
-  late String id;
-  late double voltage;
-  late IconData icon;
-  late Color iconColor;
+  late String id = "";
+  late double voltage = 0.0;
+  late IconData icon = Icons.battery_unknown;
+  late Color iconColor = Colors.black;
   double maxVoltage = 4.2;
   double minVoltage = 3.3;
 

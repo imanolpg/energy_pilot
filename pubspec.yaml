@@ -39,6 +39,7 @@ dependencies:
   syncfusion_flutter_charts: ^21.1.35
   flutter_reactive_ble: ^5.0.3
   flutter_blue: ^0.8.0
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:
