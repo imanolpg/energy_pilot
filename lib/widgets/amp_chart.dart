@@ -15,6 +15,7 @@ class AmpChart extends StatelessWidget {
 
     return SfCartesianChart(
       margin: const EdgeInsets.only(top: 30, bottom: 30, left: 10, right: 10),
+      enableAxisAnimation: true,
       series: <LineSeries<Data, int>>[
         LineSeries<Data, int>(
           dataSource: ampChartDataProvider.ampChartData,

@@ -11,7 +11,7 @@ class AmpChartDataProvider extends ChangeNotifier {
 
   AmpChartDataProvider() {
     Timer.periodic(
-        const Duration(milliseconds: 1000), (_) => addData(current: 12));
+        const Duration(milliseconds: 500), (_) => addData(current: 12));
   }
 
   List<Data> get ampChartData => _ampChartData.ampChartData;

@@ -1,6 +1,6 @@
 import 'package:energy_pilot/providers/amp_chart_data_provider.dart';
 import 'package:energy_pilot/providers/battery_provider.dart';
-import 'package:energy_pilot/screens/connect_device.dart';
+import 'package:energy_pilot/providers/bluetooth_provider.dart';
 import 'package:energy_pilot/screens/home.dart';
 import 'package:energy_pilot/screens/user.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +16,9 @@ void main() {
         ChangeNotifierProvider<AmpChartDataProvider>(
           create: (_) => AmpChartDataProvider(),
         ),
+        ChangeNotifierProvider<BluetoothProvider>(
+          create: (_) => BluetoothProvider(),
+        ),
       ],
       child: const App(),
     ),
@@ -30,9 +33,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => const Home(),
+        '/': (context) => Home(),
         '/user': (context) => const User(),
-        '/connect': (context) => const ConnectDevice(),
       },
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,

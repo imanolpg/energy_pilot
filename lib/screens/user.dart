@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/Footer.dart';
+import '../widgets/footer.dart';
 
 class User extends StatefulWidget {
   const User({Key? key}) : super(key: key);
