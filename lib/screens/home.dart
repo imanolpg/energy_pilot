@@ -11,15 +11,17 @@ import '../widgets/cell_status.dart';
 import '../widgets/footer.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  Home({super.key});
+
+  FlutterBlue flutterBlue = FlutterBlue.instance;
 
   @override
   Widget build(BuildContext context) {
     BatteryProvider batteryProvider = context.watch<BatteryProvider>();
     BluetoothProvider bluetoothProvider = context.watch<BluetoothProvider>();
 
-    if (FlutterBlue.instance.state == BluetoothState.on) {
-      return const ScanDevices();
+    if (bluetoothProvider.device == null) {
+      return ScanDevices();
     } else {
       return Scaffold(
         appBar: AppBar(

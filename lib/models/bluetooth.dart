@@ -1,7 +1,7 @@
 import 'package:flutter_blue/flutter_blue.dart';
 
 class Bluetooth {
-  FlutterBlue flutterBlue;
+  final FlutterBlue flutterBlue;
 
   late BluetoothDevice device;
 

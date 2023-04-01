@@ -1,13 +1,28 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
-import '../models/bluetooth.dart';
-
 class BluetoothProvider extends ChangeNotifier {
-  final Bluetooth _bluetooth = Bluetooth(flutterBlue: FlutterBlue.instance);
+  BluetoothDevice? _device;
+  BluetoothCharacteristic? _characteristic;
 
-  Bluetooth get bluetooth => _bluetooth;
-  FlutterBlue get flutterBlue => _bluetooth.flutterBlue;
+  BluetoothDevice? get device => _device;
 
-  Future<void> setBtDevice({required Bluetooth bluetooth}) async {}
+  set device(BluetoothDevice? device) {
+    _device = device;
+    notifyListeners();
+  }
+
+  BluetoothCharacteristic? get characteristic => _characteristic;
+
+  set characteristic(BluetoothCharacteristic? characteristic) {
+    _characteristic = characteristic;
+    notifyListeners();
+  }
+
+  void disconnect() {
+    _device?.disconnect();
+    _device = null;
+    _characteristic = null;
+    notifyListeners();
+  }
 }
