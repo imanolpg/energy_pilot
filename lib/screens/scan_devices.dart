@@ -12,18 +12,12 @@ class _ScanDevicesState extends State<ScanDevices> {
   List<BluetoothDevice> devices = [];
   bool _scanning = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _startScan();
-  }
-
   Future<void> _startScan() async {
     try {
       setState(() => _scanning = true);
 
       // Start scanning
-      await flutterBlue.startScan(timeout: Duration(seconds: 4));
+      await flutterBlue.startScan(timeout: const Duration(seconds: 4));
 
       // Listen for scan results
       flutterBlue.scanResults.listen((results) async {
@@ -73,32 +67,52 @@ class _ScanDevicesState extends State<ScanDevices> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Scan for Device'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text('Scan for Device'),
+        ),
+        body: Column(
           children: [
-            if (!_scanning && devices.isNotEmpty)
-              Center(
-                child: ScannedDevices(devices: devices),
+            if (_scanning)
+              SizedBox(
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    Text("Scanning..."),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    )
+                  ],
+                ),
               )
             else
-              Column(
-                children: const [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 10,),
-                  Center(
-                    child: Text("Scanning dvices.."),
-                  ),
-                ],
-              )
+              const SizedBox(
+                height: 60,
+              ),
+            ScannedDevices(devices: devices),
           ],
         ),
-      ),
-    );
+        floatingActionButton: _scanning
+            ? Container()
+            : FloatingActionButton.extended(
+                onPressed: () {
+                  _startScan();
+                },
+                label: const Text("Start scanning"),
+              ));
   }
 
   @override
