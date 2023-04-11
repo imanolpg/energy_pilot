@@ -38,9 +38,3 @@ class AmpChart extends StatelessWidget {
     );
   }
 }
-
-class LiveData {
-  LiveData(this.time, this.current);
-  final int time;
-  final num current;
-}

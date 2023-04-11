@@ -1,23 +1,14 @@
 import 'package:energy_pilot/providers/bluetooth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 import 'package:provider/provider.dart';
 
 class ScannedDevices extends StatelessWidget {
-  const ScannedDevices({Key? key, required this.devices}) : super(key: key);
-
-  final List<BluetoothDevice> devices;
-
-  void devicePressed(BluetoothDevice device, BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      BluetoothProvider bluetoothProvider =
-          Provider.of<BluetoothProvider>(context, listen: false);
-      bluetoothProvider.setDevice(device);
-    });
-  }
+  const ScannedDevices({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    BluetoothProvider bluetoothProvider = context.watch<BluetoothProvider>();
+
     return Column(children: [
       const Center(
         child: Text(
@@ -29,9 +20,9 @@ class ScannedDevices extends StatelessWidget {
         margin: const EdgeInsets.all(10.0),
         color: Colors.grey[100],
         height: 500,
-        child: devices.isNotEmpty
+        child: bluetoothProvider.availableDevices.isNotEmpty
             ? Column(
-                children: devices
+                children: bluetoothProvider.availableDevices
                     .map(
                       (device) => Container(
                         margin: const EdgeInsets.all(20.0),
@@ -50,7 +41,7 @@ class ScannedDevices extends StatelessWidget {
                           color: Colors.grey[200],
                           child: InkWell(
                             onTap: () {
-                              devicePressed(device, context);
+                              bluetoothProvider.connectToDevice(device);
                             },
                             child: Container(
                               padding: const EdgeInsets.all(10.0),

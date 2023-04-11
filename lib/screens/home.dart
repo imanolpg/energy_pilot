@@ -20,8 +20,8 @@ class Home extends StatelessWidget {
     BatteryProvider batteryProvider = context.watch<BatteryProvider>();
     BluetoothProvider bluetoothProvider = context.watch<BluetoothProvider>();
 
-    if (bluetoothProvider.device == null) {
-      return ScanDevices();
+    if (bluetoothProvider.bluetooth.device == null) {
+      return const ScanDevices();
     } else {
       return Scaffold(
         appBar: AppBar(

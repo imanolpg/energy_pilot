@@ -9,15 +9,11 @@ class AmpChartDataProvider extends ChangeNotifier {
   final AmpChartData _ampChartData = AmpChartData();
   late ChartSeriesController _chartSeriesController;
 
-  AmpChartDataProvider() {
-    Timer.periodic(
-        const Duration(milliseconds: 100), (_) => addData(current: 12));
-  }
-
   List<Data> get ampChartData => _ampChartData.ampChartData;
   ChartSeriesController get chartSeriesController => _chartSeriesController;
 
-  Future<void> addData({required int current}) async {
+  Future<void> addData(int current) async {
+    print("Added new data $current");
     _ampChartData.addData(current: current);
     notifyListeners();
   }

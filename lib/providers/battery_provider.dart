@@ -12,7 +12,7 @@ class BatteryProvider extends ChangeNotifier {
     Cell(id: "cel_3"),
   ]);
 
-  void aj() {
+  void addRandomVoltajes() {
     _battery.cells[0].setVoltage((math.Random().nextDouble() * 0.9) + 3.3);
     _battery.cells[1].setVoltage((math.Random().nextDouble() * 0.9) + 3.3);
     _battery.cells[2].setVoltage((math.Random().nextDouble() * 0.9) + 3.3);
@@ -21,7 +21,7 @@ class BatteryProvider extends ChangeNotifier {
 
   BatteryProvider() {
     Timer.periodic(const Duration(milliseconds: 5000), (_) {
-      aj();
+      addRandomVoltajes();
     });
   }
 
