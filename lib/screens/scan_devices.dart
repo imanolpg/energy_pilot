@@ -77,7 +77,7 @@ class ScanDevices extends StatelessWidget {
           initialData: BluetoothState.unknown,
           builder: (context, snapshot) {
             final state = snapshot.data;
-            if (state == BluetoothState.on) {
+            if (state == BluetoothState.on && !bluetoothProvider.isScanning) {
               return FloatingActionButton.extended(
                 onPressed: () {
                   bluetoothProvider.scanForAvailableDevices();

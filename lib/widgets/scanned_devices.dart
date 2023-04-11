@@ -26,17 +26,14 @@ class ScannedDevices extends StatelessWidget {
                     .map(
                       (device) => Container(
                         margin: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: const Offset(0, 3),
-                              ),
-                            ]),
+                        decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(10.0), boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ]),
                         child: Material(
                           color: Colors.grey[200],
                           child: InkWell(

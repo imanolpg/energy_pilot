@@ -11,20 +11,15 @@ class BluetoothProvider extends ChangeNotifier {
   // array of available devices when are scanned
   final List<BluetoothDevice> _availableDevices = [];
   // StreamController for the body
-  final StreamController<BluetoothState> _bodyBluetoothStateStream =
-      StreamController<BluetoothState>();
+  final StreamController<BluetoothState> _bodyBluetoothStateStream = StreamController<BluetoothState>();
   // StreamController for the floatingActionButton
-  final StreamController<BluetoothState>
-      _floatingActionButtonBluetoothStateStream =
-      StreamController<BluetoothState>();
+  final StreamController<BluetoothState> _floatingActionButtonBluetoothStateStream = StreamController<BluetoothState>();
 
   /// begin Getters and setters
   Bluetooth get bluetooth => _bluetooth;
   FlutterBlue get flutterBlue => _bluetooth.flutterBlue;
-  Stream<BluetoothState> get bodyBluetoothStateStream =>
-      _bodyBluetoothStateStream.stream;
-  Stream<BluetoothState> get floatingActionButtonBluetoothStateStream =>
-      _floatingActionButtonBluetoothStateStream.stream;
+  Stream<BluetoothState> get bodyBluetoothStateStream => _bodyBluetoothStateStream.stream;
+  Stream<BluetoothState> get floatingActionButtonBluetoothStateStream => _floatingActionButtonBluetoothStateStream.stream;
   bool get isScanning => bluetooth.isScanning;
   void setIsScanning(bool isScanning) {
     _bluetooth.setIsScanning(isScanning);
@@ -64,8 +59,7 @@ class BluetoothProvider extends ChangeNotifier {
       // connected devices are checked
       for (BluetoothDevice connectedDevice in connectedDevices) {
         // get the services of the particular device
-        List<BluetoothService> services =
-            await connectedDevice.discoverServices();
+        List<BluetoothService> services = await connectedDevice.discoverServices();
         // search for the specific server
         for (BluetoothService service in services) {
           if (service.uuid.toString() == bluetooth.serviceUuid) {
@@ -73,7 +67,6 @@ class BluetoothProvider extends ChangeNotifier {
             // and we have to subscribe to characteristics
             print("Servicio ${service.uuid}");
             bluetooth.setDevice(connectedDevice);
-            bluetooth.setService(service);
             bluetooth.subscribeToCharacteristics();
             break;
           }
@@ -91,8 +84,7 @@ class BluetoothProvider extends ChangeNotifier {
 
       flutterBlue.scanResults.listen((scanResults) async {
         // get the connected devices
-        List<BluetoothDevice> connectedDevices =
-            await flutterBlue.connectedDevices;
+        List<BluetoothDevice> connectedDevices = await flutterBlue.connectedDevices;
 
         for (ScanResult scanResult in scanResults) {
           print("Dispositivo escaneado: ${scanResult.device.name}");
@@ -113,8 +105,7 @@ class BluetoothProvider extends ChangeNotifier {
 
             if (connection_done) {
               // get the connected device services
-              List<BluetoothService> deviceServices =
-                  await scanResult.device.discoverServices();
+              List<BluetoothService> deviceServices = await scanResult.device.discoverServices();
 
               // search if the wanted service is offered by the device
               for (BluetoothService service in deviceServices) {
@@ -144,12 +135,14 @@ class BluetoothProvider extends ChangeNotifier {
     }
   }
 
+  /// Connect to device for monitoring
   void connectToDevice(BluetoothDevice device) async {
     bluetooth.setDevice(device);
     BluetoothDevice? bluetoothDevice = bluetooth.device;
+    // establish connection with the device
     if (bluetoothDevice != null) {
-      await bluetoothDevice.connect();
-      bluetooth.subscribeToCharacteristics();
+      await bluetoothDevice.connect(); // connect to the device
+      bluetooth.subscribeToCharacteristics(); // subscribe to characteristics
     }
     notifyListeners();
   }
