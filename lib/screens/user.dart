@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/footer.dart';
@@ -19,7 +18,7 @@ class _UserState extends State<User> {
         title: const Text('User'),
       ),
       body: const Center(
-        child: const Text("User"),
+        child: Text("User"),
       ),
       bottomNavigationBar: const Footer(),
     );

@@ -33,7 +33,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => Home(),
+        '/': (context) => const Home(),
         '/user': (context) => const User(),
       },
       theme: ThemeData(

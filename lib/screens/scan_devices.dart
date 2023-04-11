@@ -82,7 +82,7 @@ class ScanDevices extends StatelessWidget {
                 onPressed: () {
                   bluetoothProvider.scanForAvailableDevices();
                 },
-                label: Text("Start scanning.."),
+                label: const Text("Start scanning.."),
               );
             } else {
               return Container();

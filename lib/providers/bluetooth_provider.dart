@@ -95,15 +95,15 @@ class BluetoothProvider extends ChangeNotifier {
             print("Dispositivo no conectado");
             // connect to device to see the services
             // if there is an error no connection is made
-            bool connection_done = false;
+            bool connectionDone = false;
             try {
               await scanResult.device.connect();
-              connection_done = true;
+              connectionDone = true;
             } catch (e) {
               print("An error when connecting to device");
             }
 
-            if (connection_done) {
+            if (connectionDone) {
               // get the connected device services
               List<BluetoothService> deviceServices = await scanResult.device.discoverServices();
 

@@ -1,7 +1,6 @@
 import 'package:energy_pilot/providers/bluetooth_provider.dart';
 import 'package:energy_pilot/screens/scan_devices.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/battery_provider.dart';
@@ -11,9 +10,7 @@ import '../widgets/cell_status.dart';
 import '../widgets/footer.dart';
 
 class Home extends StatelessWidget {
-  Home({super.key});
-
-  FlutterBlue flutterBlue = FlutterBlue.instance;
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
