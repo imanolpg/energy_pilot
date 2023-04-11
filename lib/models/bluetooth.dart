@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:energy_pilot/providers/battery_provider.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
 import '../providers/amp_chart_data_provider.dart';
@@ -59,9 +60,9 @@ class Bluetooth {
           // get the characteristics of the service
           List<BluetoothCharacteristic> characteristics = currentService.characteristics;
           for (BluetoothCharacteristic bluetoothCharacteristic in characteristics) {
-            // subscribe to the currentCharacteristic
+            // subscribe to the characteristics
             if (bluetoothCharacteristic.uuid.toString() == currentCharacteristicUuid) {
-              bluetoothCharacteristic.setNotifyValue(true);
+              await bluetoothCharacteristic.setNotifyValue(true);
               bluetoothCharacteristic.value.listen((value) {
                 if (value.isNotEmpty) {
                   ByteData data = ByteData.sublistView(Uint8List.fromList(value));
@@ -72,11 +73,35 @@ class Bluetooth {
               });
             } else if (bluetoothCharacteristic.uuid.toString() == bat1CharacteristicUuid) {
               print("Bat1 subscribed");
+              await bluetoothCharacteristic.setNotifyValue(true);
               bluetoothCharacteristic.value.listen((value) {
                 if (value.isNotEmpty) {
                   ByteData data = ByteData.sublistView(Uint8List.fromList(value));
                   var bat1 = data.getFloat32(0, Endian.little);
+                  BatteryProvider().addVoltage(0, bat1);
                   print("Bat1: $bat1 V");
+                }
+              });
+            } else if (bluetoothCharacteristic.uuid.toString() == bat2CharacteristicUuid) {
+              print("Bat2 subscribed");
+              await bluetoothCharacteristic.setNotifyValue(true);
+              bluetoothCharacteristic.value.listen((value) {
+                if (value.isNotEmpty) {
+                  ByteData data = ByteData.sublistView(Uint8List.fromList(value));
+                  var bat2 = data.getFloat32(0, Endian.little);
+                  BatteryProvider().addVoltage(1, bat2);
+                  print("Bat2: $bat2 V");
+                }
+              });
+            } else if (bluetoothCharacteristic.uuid.toString() == bat3CharacteristicUuid) {
+              print("Bat3 subscribed");
+              await bluetoothCharacteristic.setNotifyValue(true);
+              bluetoothCharacteristic.value.listen((value) {
+                if (value.isNotEmpty) {
+                  ByteData data = ByteData.sublistView(Uint8List.fromList(value));
+                  var bat3 = data.getFloat32(0, Endian.little);
+                  BatteryProvider().addVoltage(2, bat3);
+                  print("Bat3: $bat3 V");
                 }
               });
             }

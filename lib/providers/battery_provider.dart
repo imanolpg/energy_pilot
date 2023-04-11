@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:math' as math;
-
 import 'package:energy_pilot/models/battery.dart';
 import 'package:energy_pilot/models/cell.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,18 +9,16 @@ class BatteryProvider extends ChangeNotifier {
     Cell(id: "cel_3"),
   ]);
 
-  void addRandomVoltages() {
-    _battery.cells[0].setVoltage((math.Random().nextDouble() * 0.9) + 3.3);
-    _battery.cells[1].setVoltage((math.Random().nextDouble() * 0.9) + 3.3);
-    _battery.cells[2].setVoltage((math.Random().nextDouble() * 0.9) + 3.3);
-    notifyListeners();
-  }
+  static BatteryProvider? _instance;
 
-  BatteryProvider() {
-    Timer.periodic(const Duration(milliseconds: 5000), (_) {
-      addRandomVoltages();
-    });
-  }
+  BatteryProvider._();
+
+  factory BatteryProvider() => _instance ??= BatteryProvider._();
 
   Battery get battery => _battery;
+
+  void addVoltage(int cell, double voltage) {
+    _battery.cells[cell].setVoltage(voltage);
+    notifyListeners();
+  }
 }
