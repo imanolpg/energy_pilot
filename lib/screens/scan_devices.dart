@@ -4,6 +4,7 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/bluetooth_provider.dart';
+import '../widgets/footer.dart';
 
 class ScanDevices extends StatelessWidget {
   const ScanDevices({super.key});
@@ -18,10 +19,11 @@ class ScanDevices extends StatelessWidget {
         title: const Text('Scan for Device'),
       ),
       body: StreamBuilder<BluetoothState>(
-          stream: BluetoothProvider().bodyBluetoothStateStream.stream,
+          stream: bluetoothProvider.bodyBluetoothStateStream.stream,
           initialData: BluetoothState.unknown,
           builder: (context, snapshot) {
             final state = snapshot.data;
+            print("Bluetooth state: $state");
             if (state == BluetoothState.on) {
               return Column(
                 children: [
@@ -73,7 +75,7 @@ class ScanDevices extends StatelessWidget {
             }
           }),
       floatingActionButton: StreamBuilder<BluetoothState>(
-          stream: BluetoothProvider().floatingActionButtonBluetoothStateStream.stream,
+          stream: bluetoothProvider.floatingActionButtonBluetoothStateStream.stream,
           initialData: BluetoothState.unknown,
           builder: (context, snapshot) {
             final state = snapshot.data;
@@ -88,6 +90,7 @@ class ScanDevices extends StatelessWidget {
               return Container();
             }
           }),
+      bottomNavigationBar: const Footer(),
     );
   }
 }

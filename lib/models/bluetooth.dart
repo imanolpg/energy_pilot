@@ -15,16 +15,12 @@ class Bluetooth {
 
   // ble service uuid
   final String serviceUuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
-
   // current live data characteristic uuid of service ble
   final String currentCharacteristicUuid = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
-
   // bat_1 voltage live data characteristic uuid of service ble
   final String bat1CharacteristicUuid = "a2bdef65-f783-490d-b6ed-5ec887c85958";
-
   // bat_2 voltage live data characteristic uuid of service ble
   final String bat2CharacteristicUuid = "d04f3a17-c31b-40df-a4ae-4693d7315527";
-
   // bat_3 voltage live data characteristic uuid of service ble
   final String bat3CharacteristicUuid = "7b0a924a-7cac-4ebc-9eab-08ed6944b9f7";
 

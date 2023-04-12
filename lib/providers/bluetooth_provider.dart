@@ -34,9 +34,11 @@ class BluetoothProvider extends ChangeNotifier {
     );
     // broadcast the data to the other listeners
     bluetooth.flutterBlue.state.listen((data) {
+      print("New data receibed from flutterBlue.state: $data");
       try {
         _bodyBluetoothStateStream.add(data);
         _floatingActionButtonBluetoothStateStream.add(data);
+        print("New stream data $data");
       } catch (e) {
         print("Error in streams: $e");
       }
@@ -105,7 +107,7 @@ class BluetoothProvider extends ChangeNotifier {
               await scanResult.device.connect();
               connectionDone = true;
             } catch (e) {
-              print("An error when connecting to device");
+              print("An error occurred when connecting to device: $e");
             }
 
             if (connectionDone) {
@@ -161,6 +163,41 @@ class BluetoothProvider extends ChangeNotifier {
       }
       bluetooth.setDevice(null);
     }
+    notifyListeners();
+  }
+
+  /// disconnects from the current device
+  void disconnectDevice() async {
+    // disconnect from flutterBlue device and set it to null
+
+    // get the connected devices
+    List<BluetoothDevice> connectedDevices = await flutterBlue.connectedDevices;
+    for (BluetoothDevice device in connectedDevices) {
+      // get the services of the device
+      List<BluetoothService> services = await device.discoverServices();
+      for (BluetoothService service in services) {
+        // if the device has the service disconnect
+        if (service.uuid.toString() == bluetooth.serviceUuid) {
+          print("Disconnecting device.. ${device.name}");
+          await device.disconnect();
+          break;
+        }
+      }
+    }
+    // set the device to null
+    bluetooth.setDevice(null);
+    // clear the available devices list
+    availableDevices.clear();
+    // set the BluetoothState to BluetoothState.on. If not set t
+    Timer(const Duration(milliseconds: 1), () {
+      try {
+        _bodyBluetoothStateStream.add(BluetoothState.on);
+        _floatingActionButtonBluetoothStateStream.add(BluetoothState.on);
+        print("Status sent BluetoothState.on");
+      } catch (e) {
+        print("Error in streams: $e");
+      }
+    });
     notifyListeners();
   }
 }
