@@ -18,7 +18,7 @@ class ScanDevices extends StatelessWidget {
         title: const Text('Scan for Device'),
       ),
       body: StreamBuilder<BluetoothState>(
-          stream: bluetoothProvider.bodyBluetoothStateStream,
+          stream: BluetoothProvider().bodyBluetoothStateStream.stream,
           initialData: BluetoothState.unknown,
           builder: (context, snapshot) {
             final state = snapshot.data;
@@ -73,7 +73,7 @@ class ScanDevices extends StatelessWidget {
             }
           }),
       floatingActionButton: StreamBuilder<BluetoothState>(
-          stream: bluetoothProvider.floatingActionButtonBluetoothStateStream,
+          stream: BluetoothProvider().floatingActionButtonBluetoothStateStream.stream,
           initialData: BluetoothState.unknown,
           builder: (context, snapshot) {
             final state = snapshot.data;

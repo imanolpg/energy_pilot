@@ -16,7 +16,6 @@ class AmpChartDataProvider extends ChangeNotifier {
   ChartSeriesController get chartSeriesController => _chartSeriesController;
 
   void addData(int current) async {
-    print("Added new data $current");
     _ampChartData.addData(current: current);
     notifyListeners();
   }

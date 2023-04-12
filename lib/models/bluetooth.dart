@@ -72,7 +72,6 @@ class Bluetooth {
                 }
               });
             } else if (bluetoothCharacteristic.uuid.toString() == bat1CharacteristicUuid) {
-              print("Bat1 subscribed");
               await bluetoothCharacteristic.setNotifyValue(true);
               bluetoothCharacteristic.value.listen((value) {
                 if (value.isNotEmpty) {
@@ -83,7 +82,6 @@ class Bluetooth {
                 }
               });
             } else if (bluetoothCharacteristic.uuid.toString() == bat2CharacteristicUuid) {
-              print("Bat2 subscribed");
               await bluetoothCharacteristic.setNotifyValue(true);
               bluetoothCharacteristic.value.listen((value) {
                 if (value.isNotEmpty) {
@@ -94,7 +92,6 @@ class Bluetooth {
                 }
               });
             } else if (bluetoothCharacteristic.uuid.toString() == bat3CharacteristicUuid) {
-              print("Bat3 subscribed");
               await bluetoothCharacteristic.setNotifyValue(true);
               bluetoothCharacteristic.value.listen((value) {
                 if (value.isNotEmpty) {

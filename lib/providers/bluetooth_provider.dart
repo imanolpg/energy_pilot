@@ -11,26 +11,15 @@ class BluetoothProvider extends ChangeNotifier {
   // array of available devices when are scanned
   final List<BluetoothDevice> _availableDevices = [];
   // StreamController for the body
-  final StreamController<BluetoothState> _bodyBluetoothStateStream = StreamController<BluetoothState>();
+  final StreamController<BluetoothState> _bodyBluetoothStateStream = StreamController<BluetoothState>.broadcast();
   // StreamController for the floatingActionButton
-  final StreamController<BluetoothState> _floatingActionButtonBluetoothStateStream = StreamController<BluetoothState>();
+  final StreamController<BluetoothState> _floatingActionButtonBluetoothStateStream = StreamController<BluetoothState>.broadcast();
 
-  /// begin Getters and setters
-  Bluetooth get bluetooth => _bluetooth;
-  FlutterBlue get flutterBlue => _bluetooth.flutterBlue;
-  Stream<BluetoothState> get bodyBluetoothStateStream => _bodyBluetoothStateStream.stream;
-  Stream<BluetoothState> get floatingActionButtonBluetoothStateStream => _floatingActionButtonBluetoothStateStream.stream;
-  bool get isScanning => bluetooth.isScanning;
-  void setIsScanning(bool isScanning) {
-    _bluetooth.setIsScanning(isScanning);
-    notifyListeners();
-  }
+  static BluetoothProvider? _instance;
 
-  List<BluetoothDevice> get availableDevices => _availableDevices;
-  BluetoothDevice? get device => bluetooth.device;
-  //// end Getters and Setters
+  factory BluetoothProvider() => _instance ??= BluetoothProvider._();
 
-  BluetoothProvider() {
+  BluetoothProvider._() {
     // two StreamProviders are used and we have to create two streams from the
     // stream in flutterBlue.instance.state
     // set _bodyBluetoothStateStream stream
@@ -45,8 +34,12 @@ class BluetoothProvider extends ChangeNotifier {
     );
     // broadcast the data to the other listeners
     bluetooth.flutterBlue.state.listen((data) {
-      _bodyBluetoothStateStream.add(data);
-      _floatingActionButtonBluetoothStateStream.add(data);
+      try {
+        _bodyBluetoothStateStream.add(data);
+        _floatingActionButtonBluetoothStateStream.add(data);
+      } catch (e) {
+        print("Error in streams: $e");
+      }
       if (data != BluetoothState.on) {
         setDevice(null);
       }
@@ -55,7 +48,6 @@ class BluetoothProvider extends ChangeNotifier {
     // the first time we create the bluetooth object we have to check if there is
     // a device connected
     bluetooth.flutterBlue.connectedDevices.then((connectedDevices) async {
-      print("construyendo... $connectedDevices");
       // connected devices are checked
       for (BluetoothDevice connectedDevice in connectedDevices) {
         // get the services of the particular device
@@ -65,7 +57,6 @@ class BluetoothProvider extends ChangeNotifier {
           if (service.uuid.toString() == bluetooth.serviceUuid) {
             // if the desired service is found we have to set the device, service
             // and we have to subscribe to characteristics
-            print("Servicio ${service.uuid}");
             bluetooth.setDevice(connectedDevice);
             bluetooth.subscribeToCharacteristics();
             break;
@@ -74,6 +65,21 @@ class BluetoothProvider extends ChangeNotifier {
       }
     });
   }
+
+  /// begin Getters and setters
+  Bluetooth get bluetooth => _bluetooth;
+  FlutterBlue get flutterBlue => _bluetooth.flutterBlue;
+  StreamController<BluetoothState> get bodyBluetoothStateStream => _bodyBluetoothStateStream;
+  StreamController<BluetoothState> get floatingActionButtonBluetoothStateStream => _floatingActionButtonBluetoothStateStream;
+  bool get isScanning => bluetooth.isScanning;
+  void setIsScanning(bool isScanning) {
+    _bluetooth.setIsScanning(isScanning);
+    notifyListeners();
+  }
+
+  List<BluetoothDevice> get availableDevices => _availableDevices;
+  BluetoothDevice? get device => bluetooth.device;
+  //// end Getters and Setters
 
   void scanForAvailableDevices() async {
     try {
@@ -92,7 +98,6 @@ class BluetoothProvider extends ChangeNotifier {
           // check if the device is connected. If it is connected and a new
           // connection is made an error is thrown
           if (!connectedDevices.contains(scanResult.device)) {
-            print("Dispositivo no conectado");
             // connect to device to see the services
             // if there is an error no connection is made
             bool connectionDone = false;
@@ -121,15 +126,12 @@ class BluetoothProvider extends ChangeNotifier {
 
               // once the device has been analyzed it is disconnected
               await scanResult.device.disconnect();
-              print("Dispositivo desconectado");
             }
-          } else {
-            print("Dispositivo ya conectado");
           }
         }
       });
     } catch (e) {
-      print("Error");
+      print("Error $e");
     } finally {
       setIsScanning(false);
     }
