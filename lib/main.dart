@@ -36,11 +36,7 @@ class App extends StatelessWidget {
         '/': (context) => const Home(),
         '/user': (context) => const User(),
       },
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(color: Colors.blueAccent),
-        brightness: Brightness.light,
-      ),
+      theme: ThemeData(scaffoldBackgroundColor: Colors.white, appBarTheme: const AppBarTheme(color: Colors.blueAccent), brightness: Brightness.light),
     );
   }
 }
