@@ -62,6 +62,7 @@ class Home extends StatelessWidget {
       return const ScanDevices();
     } else {
       return Scaffold(
+        extendBodyBehindAppBar: false,
         appBar: AppBar(
           title: const Text('Home'),
           actions: buildAppBarActions(),

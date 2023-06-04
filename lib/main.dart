@@ -1,6 +1,7 @@
 import 'package:energy_pilot/providers/amp_chart_data_provider.dart';
 import 'package:energy_pilot/providers/battery_provider.dart';
 import 'package:energy_pilot/providers/bluetooth_provider.dart';
+import 'package:energy_pilot/providers/user_provider.dart';
 import 'package:energy_pilot/screens/home.dart';
 import 'package:energy_pilot/screens/user.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,9 @@ void main() {
         ChangeNotifierProvider<BluetoothProvider>(
           create: (_) => BluetoothProvider(),
         ),
+        ChangeNotifierProvider<UserProvider>(
+          create: (_) => UserProvider(),
+        )
       ],
       child: const App(),
     ),
