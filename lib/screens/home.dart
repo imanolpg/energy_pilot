@@ -81,9 +81,7 @@ class Home extends StatelessWidget {
                     .toList(),
               ),
             ),
-            BatteryConfig(
-              battery: batteryProvider.battery,
-            ),
+            BatteryConfig(),
           ],
         ),
         bottomNavigationBar: const Footer(),

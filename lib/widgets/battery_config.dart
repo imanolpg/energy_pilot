@@ -1,21 +1,21 @@
+import 'package:energy_pilot/providers/battery_provider.dart';
 import 'package:flutter/material.dart';
-
-import '../models/battery.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class BatteryConfig extends StatelessWidget {
-  final Battery battery;
+  BatteryConfig({Key? key}) : super(key: key);
 
-  const BatteryConfig({
-    Key? key,
-    required this.battery,
-  }) : super(key: key);
+  // text input controllers
+  String minVoltageText = "";
+  String maxVoltageText = "";
+  String maxCurrentText = "";
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 20.0),
       padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-      color: Colors.black,
+      color: Colors.blueAccent,
       child: Column(
         children: [
           Container(
@@ -39,15 +39,19 @@ class BatteryConfig extends StatelessWidget {
                     SizedBox(
                       width: 100,
                       child: TextField(
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           filled: true,
-                          hintStyle: TextStyle(color: Colors.grey[900]),
-                          hintText: '${battery.minVoltage} V',
-                          fillColor: Colors.white70,
+                          hintStyle: const TextStyle(color: Colors.black),
+                          hintText: '${BatteryProvider().battery.minVoltage} V',
+                          fillColor: Colors.white,
                         ),
+                        onChanged: (text) {
+                          minVoltageText = text;
+                        },
                       ),
                     ),
                   ],
@@ -66,15 +70,19 @@ class BatteryConfig extends StatelessWidget {
                     SizedBox(
                       width: 100,
                       child: TextField(
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           filled: true,
-                          hintStyle: TextStyle(color: Colors.grey[900]),
-                          hintText: "${battery.maxVoltage} V",
-                          fillColor: Colors.white70,
+                          hintStyle: const TextStyle(color: Colors.black),
+                          hintText: "${BatteryProvider().battery.maxVoltage} V",
+                          fillColor: Colors.white,
                         ),
+                        onChanged: (text) {
+                          maxVoltageText = text;
+                        },
                       ),
                     ),
                   ],
@@ -102,15 +110,19 @@ class BatteryConfig extends StatelessWidget {
                   SizedBox(
                     width: 150,
                     child: TextField(
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         filled: true,
-                        hintStyle: TextStyle(color: Colors.grey[900]),
-                        hintText: "${battery.maxAmps} A",
-                        fillColor: Colors.white70,
+                        hintStyle: const TextStyle(color: Colors.black),
+                        hintText: "${BatteryProvider().battery.maxAmps} A",
+                        fillColor: Colors.white,
                       ),
+                      onChanged: (text) {
+                        maxCurrentText = text;
+                      },
                     ),
                   ),
                 ],
@@ -122,13 +134,27 @@ class BatteryConfig extends StatelessWidget {
             width: 200,
             child: TextButton(
               style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
+                foregroundColor: Colors.black,
                 padding: const EdgeInsets.all(16.0),
                 textStyle: const TextStyle(fontSize: 20),
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: Colors.greenAccent,
               ),
-              onPressed: () {},
-              child: const Text("Aplicar"),
+              onPressed: () {
+                String response = BatteryProvider().applyBatteryConfig(minVoltageText, maxVoltageText, maxCurrentText);
+                if (response == "") {
+                  // everything is fine
+                  minVoltageText = "";
+                  maxVoltageText = "";
+                  maxCurrentText = "";
+                } else {
+                  Fluttertoast.showToast(
+                    msg: 'Fill all the config fields',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                  );
+                }
+              },
+              child: const Text("Apply"),
             ),
           ),
         ],

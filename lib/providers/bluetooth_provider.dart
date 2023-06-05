@@ -200,4 +200,9 @@ class BluetoothProvider extends ChangeNotifier {
     });
     notifyListeners();
   }
+
+  /// send the new params to the board over BLE
+  void sendBatteryConfigurationToBoard(double minVoltage, double maxVoltage, double maxCurrent) async {
+    _bluetooth.sendBatteryConfigurationToBoard(minVoltage, maxVoltage, maxCurrent);
+  }
 }

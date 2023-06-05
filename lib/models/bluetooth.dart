@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:energy_pilot/providers/battery_provider.dart';
@@ -23,6 +24,12 @@ class Bluetooth {
   final String bat2CharacteristicUuid = "d04f3a17-c31b-40df-a4ae-4693d7315527";
   // bat_3 voltage live data characteristic uuid of service ble
   final String bat3CharacteristicUuid = "7b0a924a-7cac-4ebc-9eab-08ed6944b9f7";
+  // min voltage board configuration characteristic uuid of service ble
+  final String minVoltageBoardConfigurationCharacteristicUuid = "4c9b541d-0470-4018-ab66-03fcf89b613f";
+  // max voltage board configuration characteristic uuid of service ble
+  final String maxVoltageBoardConfigurationCharacteristicUuid = "304aa553-a662-4ffa-a9a7-4877acc36751";
+  // max current board configuration characteristic uuid of service ble
+  final String maxCurrentBoardConfigurationCharacteristicUuid = "067735e9-d435-46c6-ae3f-99d31253c7dc";
 
   // Getter for _flutterBlue
   FlutterBlue get flutterBlue => _flutterBlue;
@@ -97,6 +104,51 @@ class Bluetooth {
                   print("Bat3: $bat3 V");
                 }
               });
+            }
+          }
+        }
+      }
+    } catch (e) {
+      print("Error $e");
+    }
+  }
+
+  void sendBatteryConfigurationToBoard(double minVoltage, double maxVoltage, double maxCurrent) async {
+    // create a local variable for null analysis
+    try {
+      final BluetoothDevice? device = _device;
+      if (device != null) {
+        // get the connected devices
+        List<BluetoothDevice> connectedDevices = await flutterBlue.connectedDevices;
+        // ensure it is connected
+        if (!connectedDevices.contains(device)) {
+          await device.connect();
+        }
+        // get the services of the device
+        List<BluetoothService> services = await device.discoverServices();
+        for (BluetoothService currentService in services) {
+          // get the characteristics of the service
+          List<BluetoothCharacteristic> characteristics = currentService.characteristics;
+          for (BluetoothCharacteristic bluetoothCharacteristic in characteristics) {
+            // subscribe to the characteristics
+            if (bluetoothCharacteristic.uuid.toString() == minVoltageBoardConfigurationCharacteristicUuid) {
+              List<int> value = utf8.encode(minVoltage.toString());
+              await bluetoothCharacteristic.write(value);
+              await bluetoothCharacteristic.setNotifyValue(true);
+              await Future.delayed(const Duration(milliseconds: 500));
+              print("Min voltage sent by bluetooth");
+            } else if (bluetoothCharacteristic.uuid.toString() == maxVoltageBoardConfigurationCharacteristicUuid) {
+              List<int> value = utf8.encode(maxVoltage.toString());
+              await bluetoothCharacteristic.write(value);
+              await bluetoothCharacteristic.setNotifyValue(true);
+              await Future.delayed(const Duration(milliseconds: 500));
+              print("Max voltage sent by bluetooth");
+            } else if (bluetoothCharacteristic.uuid.toString() == maxCurrentBoardConfigurationCharacteristicUuid) {
+              List<int> value = utf8.encode(maxCurrent.toString());
+              await bluetoothCharacteristic.write(value);
+              await bluetoothCharacteristic.setNotifyValue(true);
+              await Future.delayed(const Duration(milliseconds: 500));
+              print("Max current sent by bluetooth");
             }
           }
         }
