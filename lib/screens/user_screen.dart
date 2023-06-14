@@ -1,14 +1,18 @@
+import 'package:energy_pilot/models/user.dart';
+import 'package:energy_pilot/widgets/user_home.dart';
 import 'package:energy_pilot/widgets/user_login.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/user_provider.dart';
 import '../widgets/footer.dart';
 
-class User extends StatelessWidget {
-  const User({super.key});
+class UserScreen extends StatelessWidget {
+  const UserScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //UserProvider userProvider = context.watch<UserProvider>();
+    context.watch<UserProvider>();
 
     return Scaffold(
       extendBodyBehindAppBar: false,
@@ -16,7 +20,7 @@ class User extends StatelessWidget {
         centerTitle: true,
         title: const Text('User'),
       ),
-      body: const UserLogin(),
+      body: User().username is String ? UserHome() : UserLogin(),
       bottomNavigationBar: const Footer(),
     );
   }

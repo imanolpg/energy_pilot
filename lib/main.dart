@@ -3,7 +3,7 @@ import 'package:energy_pilot/providers/battery_provider.dart';
 import 'package:energy_pilot/providers/bluetooth_provider.dart';
 import 'package:energy_pilot/providers/user_provider.dart';
 import 'package:energy_pilot/screens/home.dart';
-import 'package:energy_pilot/screens/user.dart';
+import 'package:energy_pilot/screens/user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +38,7 @@ class App extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const Home(),
-        '/user': (context) => const User(),
+        '/user': (context) => const UserScreen(),
       },
       theme: ThemeData(scaffoldBackgroundColor: Colors.white, appBarTheme: const AppBarTheme(color: Colors.blueAccent), brightness: Brightness.light),
     );

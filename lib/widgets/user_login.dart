@@ -1,7 +1,12 @@
+import 'package:energy_pilot/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 
 class UserLogin extends StatelessWidget {
-  const UserLogin({Key? key}) : super(key: key);
+  UserLogin({Key? key}) : super(key: key);
+
+  // username and password fields
+  String username = "";
+  String password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -22,25 +27,32 @@ class UserLogin extends StatelessWidget {
             ),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           child: TextField(
-            decoration: InputDecoration(
+            keyboardType: TextInputType.text,
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
               hintText: "User",
             ),
+            onChanged: (text) {
+              username = text;
+            },
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           child: TextField(
             obscureText: true,
             enableSuggestions: false,
             autocorrect: false,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
               hintText: "Password",
             ),
+            onChanged: (text) {
+              password = text;
+            },
           ),
         ),
         Container(
@@ -53,7 +65,9 @@ class UserLogin extends StatelessWidget {
               textStyle: const TextStyle(fontSize: 20),
               backgroundColor: Colors.blueAccent,
             ),
-            onPressed: () {},
+            onPressed: () {
+              UserProvider().login(username, password);
+            },
             child: const Text("Login"),
           ),
         ),
