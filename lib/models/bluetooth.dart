@@ -1,14 +1,16 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:energy_pilot/providers/battery_provider.dart';
+import 'package:energy_pilot/providers/user_provider.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
 import '../providers/amp_chart_data_provider.dart';
 
 class Bluetooth {
   // flutter_blue instance
-  final FlutterBlue _flutterBlue = FlutterBlue.instance;
+  FlutterBlue _flutterBlue = FlutterBlue.instance;
   // variable to check if devices are being scanned
   bool _isScanning = false;
   // ble connected device
@@ -31,8 +33,11 @@ class Bluetooth {
   // max current board configuration characteristic uuid of service ble
   final String maxCurrentBoardConfigurationCharacteristicUuid = "067735e9-d435-46c6-ae3f-99d31253c7dc";
 
-  // Getter for _flutterBlue
+  // Getter and setter for _flutterBlue
   FlutterBlue get flutterBlue => _flutterBlue;
+  set flutterBlue(FlutterBlue value) {
+    _flutterBlue = value;
+  }
 
   // Getter and Setter for _isScanning
   bool get isScanning => _isScanning;
@@ -44,6 +49,22 @@ class Bluetooth {
   BluetoothDevice? get device => _device;
   void setDevice(BluetoothDevice? device) {
     _device = device;
+  }
+
+  double roundOffToXDecimal(double number, {int numberOfDecimal = 2}) {
+    // To prevent number that ends with 5 not round up correctly in Dart (eg: 2.275 round off to 2.27 instead of 2.28)
+    String numbersAfterDecimal = number.toString().split('.')[1];
+    if (numbersAfterDecimal != '0') {
+      int existingNumberOfDecimal = numbersAfterDecimal.length;
+      double incrementValue = 1 / (10 * pow(10, existingNumberOfDecimal));
+      if (number < 0) {
+        number -= incrementValue;
+      } else {
+        number += incrementValue;
+      }
+    }
+
+    return double.parse(number.toStringAsFixed(numberOfDecimal));
   }
 
   void subscribeToCharacteristics() async {
@@ -72,6 +93,7 @@ class Bluetooth {
                   var current = data.getFloat32(0, Endian.little);
                   print("Current: $current A");
                   AmpChartDataProvider().addData(current.toInt());
+                  UserProvider().addCurrent(roundOffToXDecimal(current));
                 }
               });
             } else if (bluetoothCharacteristic.uuid.toString() == bat1CharacteristicUuid) {
@@ -79,9 +101,10 @@ class Bluetooth {
               bluetoothCharacteristic.value.listen((value) {
                 if (value.isNotEmpty) {
                   ByteData data = ByteData.sublistView(Uint8List.fromList(value));
-                  var bat1 = data.getFloat32(0, Endian.little);
+                  double bat1 = data.getFloat32(0, Endian.little);
                   BatteryProvider().addVoltage(0, bat1);
                   print("Bat1: $bat1 V");
+                  UserProvider().addVoltage(1, roundOffToXDecimal(bat1));
                 }
               });
             } else if (bluetoothCharacteristic.uuid.toString() == bat2CharacteristicUuid) {
@@ -92,6 +115,7 @@ class Bluetooth {
                   var bat2 = data.getFloat32(0, Endian.little);
                   BatteryProvider().addVoltage(1, bat2);
                   print("Bat2: $bat2 V");
+                  UserProvider().addVoltage(2, roundOffToXDecimal(bat2));
                 }
               });
             } else if (bluetoothCharacteristic.uuid.toString() == bat3CharacteristicUuid) {
@@ -102,6 +126,7 @@ class Bluetooth {
                   var bat3 = data.getFloat32(0, Endian.little);
                   BatteryProvider().addVoltage(2, bat3);
                   print("Bat3: $bat3 V");
+                  UserProvider().addVoltage(3, roundOffToXDecimal(bat3));
                 }
               });
             }

@@ -5,20 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class UserProvider extends ChangeNotifier {
-  final String userLoginUrl = "https://energypilot.imanol.org/api/auth/login";
-  final String userLogoutUrl = "https://energypilot.imanol.org/api/auth/logout";
-  final String addCurrentUrl = "https://localhost/api/user/addCurrent";
-  final String addVoltageUrl = "https://localhost/api/user/addVoltaje";
-
   static UserProvider? _instance;
 
   factory UserProvider() => _instance ??= UserProvider._();
 
   UserProvider._();
-
-  static String userAuthCookie = "";
 
   String? extractHttpOnlyCookie(String? setCookieHeader) {
     if (setCookieHeader != null) {
@@ -36,7 +30,7 @@ class UserProvider extends ChangeNotifier {
     print("Password: $password");
     var body = jsonEncode({"userName": username, "password": hashedPassword});
 
-    final response = await http.post(Uri.parse(userLoginUrl), headers: {"Content-Type": "application/json"}, body: body);
+    final response = await http.post(Uri.parse(User().loginEndpoint), headers: {"Content-Type": "application/json"}, body: body);
 
     // check the request status
     if (response.statusCode == 200) {
@@ -52,8 +46,8 @@ class UserProvider extends ChangeNotifier {
         return;
       }
       // save the auth string
-      userAuthCookie = cookie;
-      print(userAuthCookie);
+      User().userAuthCookie = cookie;
+      print(User().userAuthCookie);
 
       Fluttertoast.showToast(msg: "Logged in");
       print("Login correct");
@@ -66,12 +60,11 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    print(userAuthCookie);
-    final response = await http.post(Uri.parse(userLogoutUrl), headers: {'cookie': userAuthCookie});
+    final response = await http.post(Uri.parse(User().logoutEndpoint), headers: {'cookie': User().userAuthCookie});
 
     print("User status: ${response.statusCode}");
 
-    // check request status
+    // check response status
     if (response.statusCode == 200) {
       // logout correct
       Fluttertoast.showToast(msg: "Logged out");
@@ -81,7 +74,54 @@ class UserProvider extends ChangeNotifier {
       // logout incorrect
       Fluttertoast.showToast(msg: "Error when logout");
       print("Error: ${response.body}");
+      User().setUsername(null);
     }
     notifyListeners();
+  }
+
+  Future<void> addVoltage(int cellNumber, double voltage) async {
+    print("Adding voltage");
+    print("strung: ${User().username}");
+    if (User().username is String) {
+      final now = DateTime.now();
+      String date = DateFormat('MM/dd/yyyy').format(now);
+      print("sending new date: $date");
+      try {
+        final response = await http.post(
+          Uri.parse(User().addVoltageEndpoint),
+          headers: {'cookie': User().userAuthCookie, "Content-Type": "application/json"},
+          body: json.encode({"date": date, "lecture": voltage, "cellNumber": cellNumber}),
+        );
+
+        // check response
+        if (response.statusCode != 200) {
+          print("Error when adding voltage to the API: ${response.body}");
+        }
+      } on Exception catch (e) {
+        print("AddVoltage exception caught: $e");
+      }
+    }
+  }
+
+  Future<void> addCurrent(double current) async {
+    if (User().username is String) {
+      final now = DateTime.now();
+      String date = DateFormat('MM/dd/yyyy').format(now);
+      print({"date": date, "lecture": current});
+      try {
+        final response = await http.post(
+          Uri.parse(User().addCurrentEndpoint),
+          headers: {'cookie': User().userAuthCookie, "Content-Type": "application/json"},
+          body: json.encode({"date": date, "lecture": current}),
+        );
+
+        // check response
+        if (response.statusCode != 200) {
+          print("Error when adding current to the API: ${response.body}");
+        }
+      } on Exception catch (e) {
+        print("AddCurrent exception caught: $e");
+      }
+    }
   }
 }

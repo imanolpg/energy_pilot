@@ -9,6 +9,7 @@ class User {
   final String _addCurrentEndpoint = "https://energypilot.imanol.org/api/user/addCurrent";
   final String _addVoltageEndpoint = "https://energypilot.imanol.org/api/user/addVoltage";
   final String _getPublicSaltEndpoint = "https://energypilot.imanol.org/api/auth/publicSalt";
+  static String _userAuthCookie = "";
 
   static User? _instance;
 
@@ -17,6 +18,15 @@ class User {
   User._();
 
   String? _username;
+
+  String get loginEndpoint => _loginEndpoint;
+  String get logoutEndpoint => _logoutEndpoint;
+  String get addCurrentEndpoint => _addCurrentEndpoint;
+  String get addVoltageEndpoint => _addVoltageEndpoint;
+  String get userAuthCookie => _userAuthCookie;
+  set userAuthCookie(String value) {
+    _userAuthCookie = value;
+  }
 
   // begin getters and setters
   String? get username => _username;

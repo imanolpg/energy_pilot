@@ -174,25 +174,33 @@ class BluetoothProvider extends ChangeNotifier {
     List<BluetoothDevice> connectedDevices = await flutterBlue.connectedDevices;
     for (BluetoothDevice device in connectedDevices) {
       // get the services of the device
-      List<BluetoothService> services = await device.discoverServices();
-      for (BluetoothService service in services) {
-        // if the device has the service disconnect
-        if (service.uuid.toString() == bluetooth.serviceUuid) {
-          print("Disconnecting device.. ${device.name}");
-          await device.disconnect();
-          break;
+      try {
+        List<BluetoothService> services = await device.discoverServices();
+        for (BluetoothService service in services) {
+          // if the device has the service disconnect
+          if (service.uuid.toString() == bluetooth.serviceUuid) {
+            print("Disconnecting device.. ${device.name}");
+            await device.disconnect();
+            print("pasado");
+
+            break;
+          }
         }
+      } on Exception catch (e) {
+        print("Device disconnect exception caught");
       }
     }
+    print("fuera");
     // set the device to null
     bluetooth.setDevice(null);
     // clear the available devices list
     availableDevices.clear();
     // set the BluetoothState to BluetoothState.on. If not set t
-    Timer(const Duration(milliseconds: 1), () {
+    Timer(const Duration(milliseconds: 100), () {
       try {
         _bodyBluetoothStateStream.add(BluetoothState.on);
         _floatingActionButtonBluetoothStateStream.add(BluetoothState.on);
+        notifyListeners();
         print("Status sent BluetoothState.on");
       } catch (e) {
         print("Error in streams: $e");
